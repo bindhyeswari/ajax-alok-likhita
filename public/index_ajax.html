@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+
+        function ajax() {}
+
+        ajax.post = function (url, obj, callback) {
+            var xhr = new XMLHttpRequest();
+            console.log(xhr.readyState);
+            xhr.addEventListener('readystatechange', function () {
+                console.log(xhr.readyState, xhr.status);
+                if (xhr.readyState === 4) {
+                    console.log(xhr.responseText);
+                    if (xhr.status === 201) {
+                        callback(null, xhr.responseText);
+                    } else {
+                        callback(xhr, null);
+                    }
+                }
+            });
+            xhr.open('post', url);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(obj));
+        };
+
+
+        function createPOSTPromise(url, obj) {
+            return new Promise(function (resolve, reject) {
+                ajax.post(url, obj, function (err, data) {
+                    if (err) { reject(err); }
+                    else {
+                        resolve(data);
+                    }
+                });
+            });
+        }
+
+        var promisex = createPOSTPromise('/contacts', {name: 'Likhita'});
+        var promisey = createPOSTPromise('/contacts', {name: 'Alok'});
+
+        var promisez = Promise.all([promisex, promisey]); // asynchronous operations in parallel / series
+
+        promisez.then(function (data) {
+            console.log(data.map(JSON.parse));
+        });
+
+
+
+
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

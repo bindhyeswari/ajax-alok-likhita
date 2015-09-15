@@ -3,61 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="css/base.css"/>
     <script>
 
-        function ajax() {
-
-        }
-
-        ajax.post = function (url, obj, callback) {
-            var xhr = new XMLHttpRequest();
-            console.log(xhr.readyState);
-            xhr.addEventListener('readystatechange', function () {
-                console.log(xhr.readyState, xhr.status);
-                if (xhr.readyState === 4) {
-                    console.log(xhr.responseText);
-                    if (xhr.status === 201) {
-                        callback(null, xhr.responseText);
-                    } else {
-                        callback(xhr, null);
-                    }
-                }
-            });
-            xhr.open('post', url);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify(obj));
-        };
+        // mime: multipart/form-data
 
 
-        function createPOSTPromise(url, obj) {
-            return new Promise(function (resolve, reject) {
-                ajax.post(url, obj, function (err, data) {
-                    if (err) { reject(err); }
-                    else {
-                        resolve(data);
-                    }
-                });
-            });
-        }
+       document.addEventListener('DOMContentLoaded', function () {
+           var input_element = document.querySelector('input[type="file"]');
+           input_element.addEventListener('change', function () {
+               var files = Array.prototype.slice.call(this.files);
 
+               var formdata = new FormData();
+               files.forEach(function (file) {
+                   formdata.append('likhita', file);
+               });
 
-        var promisex = createPOSTPromise('/contacts', {name: 'Likhita'});
-        var promisey = createPOSTPromise('/contacts', {name: 'Alok'});
-
-        var promisez = Promise.all([promisex, promisey]); // asynchronous operations in parallel / series
-
-        promisez.then(function (data) {
-            console.log(data.map(JSON.parse));
-        });
-
-
-
-
-
+               var xhr = new XMLHttpRequest();
+               xhr.open('post', '/files/upload');
+               xhr.send(formdata);
+           });
+       });
 
     </script>
 </head>
 <body>
+
+    <input type="file" multiple/>
 
 </body>
 </html>

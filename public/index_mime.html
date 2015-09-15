@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+
+        // application/json
+        // application/x-wwww-form-urlencoded
+
+        // todo: code for application/xml
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/contacts');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('name=Likhita%20Bathineni&tel=123456789');
+
+        // exercise
+
+        // convert the following json object to form url encoded
+
+        var jsObject = {
+            name: 'Likhita Bathineni',
+            email: 'likhita@gmail.com'
+        };
+
+        function jsToUrlEncoded(jsObject) {
+            // returns a form url encoded string
+            return Object.keys(jsObject).map(function (key) {
+                return encodeURIComponent(key) + '=' + encodeURIComponent(jsObject[key]);
+            }).join('&');
+        }
+
+        console.log(jsToUrlEncoded(jsObject));
+
+        // todo: write a library to convert data to and from the following formats: xml, json and urlencoded
+
+    </script>
+</head>
+<body>
+
+    <form action="/contacts" method="post">
+        <input type="text" name="name"/>
+        <input type="text" name="email"/>
+        <input type="submit" value="Create Contact"/>
+    </form>
+
+</body>
+</html>
